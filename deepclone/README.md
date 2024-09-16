@@ -40,5 +40,8 @@ Current known limitations (I'm sure there is bunch more of corner cases):
 * Manual copying provided by each class
 * Some code-generative approach for limited cases maybe
 
----
-P.S. test coverage far from perfect
+### How to check
+Take a look at [DeepCloneTest.kt](src/test/java/org/gnu/deepclone/DeepCloneTest.kt)
+and [testclasses](src/test/java/org/gnu/deepclone/testclasses)
+
+You can play around by writing own your own test
