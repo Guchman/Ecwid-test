@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-JAR=build/libs/ipcounter.jar
+JAR=build/libs/ipcounter-1.0-SNAPSHOT.jar
 
 if [ ! -f "$JAR" ]; then
   echo "Building jar"
