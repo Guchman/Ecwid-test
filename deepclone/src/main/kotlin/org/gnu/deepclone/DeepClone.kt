@@ -4,6 +4,7 @@ import org.gnu.deepclone.copiers.ArrayCopier
 import org.gnu.deepclone.copiers.CollectionCopier
 import org.gnu.deepclone.copiers.MapCopier
 import java.lang.invoke.MethodType
+import java.util.*
 import kotlin.reflect.KClass
 
 
@@ -72,14 +73,13 @@ class DeepClone {
             return copyMethod.invoke(this)
         }
 
-        val key = System.identityHashCode(obj).toString()
-        val cachedObject = currentContext[key]
+        val cachedObject = currentContext[obj]
         if (cachedObject != null) {
             return cachedObject
         } else {
             val copyProcessor = copyProcessors.firstOrNull { it.check(obj) }
             val newObject = copyProcessor?.create(obj) ?: instantiate(obj)
-            currentContext[key] = newObject
+            currentContext[obj] = newObject
             copyProcessor?.initialize(obj, newObject, currentContext) ?: initialize(
                 newObject,
                 obj,
@@ -148,19 +148,19 @@ class DeepClone {
 }
 
 class Context(private val cloner: DeepClone) {
-    private val objects: MutableMap<String, Any> = mutableMapOf()
+    private val objects: IdentityHashMap<Any, Any> = IdentityHashMap()
 
     /**
      * Don't use that outside of DeepClone
      * Should be package private
      */
-    internal operator fun get(objectIdentity: String) = objects[objectIdentity]
+    internal operator fun get(objectIdentity: Any) = objects[objectIdentity]
 
     /**
      * Don't use that outside of DeepClone
      * Should be package private
      */
-    internal operator fun set(objectIdentity: String, obj: Any) {
+    internal operator fun set(objectIdentity: Any, obj: Any) {
         objects[objectIdentity] = obj
     }
 
